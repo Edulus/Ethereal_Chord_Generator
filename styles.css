@@ -1,0 +1,291 @@
+@import url("https://fonts.googleapis.com/css2?family=Michroma&display=swap");
+
+body {
+  font-family: "Michroma", sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  margin: 0;
+  padding: 20px;
+  box-sizing: border-box;
+  background-color: black;
+}
+
+.main-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-height: 100vh;
+  overflow-y: auto;
+}
+
+#starfield,
+#aurora-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -2;
+}
+
+#aurora-background {
+  z-index: -1;
+}
+
+.tone-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  width: 100%;
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.tone-button {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: normal;
+  color: white;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+  font-size: 18px;
+}
+
+.button-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  width: 100%;
+  max-width: 450px;
+  aspect-ratio: 1 / 1;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.chord-button {
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  border: none;
+  font-size: clamp(12px, 3vw, 16px);
+  font-weight: normal;
+  font-family: "Michroma", sans-serif;
+  cursor: pointer;
+  background-color: rgba(76, 175, 80, 0.8);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 5px;
+  position: relative;
+  overflow: hidden;
+}
+
+.chord-button::before {
+  content: "";
+  position: absolute;
+  width: 30%;
+  height: 30%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform 0.3s ease;
+  border-radius: 5px;
+  opacity: 1;
+  z-index: -1;
+}
+
+.chord-button:nth-child(1)::before {
+  background-color: rgba(69, 191, 255, 1); /* Light Sky Blue */
+}
+
+.chord-button:nth-child(2)::before {
+  background-color: rgba(71, 191, 255, 1); /* Sky Blue */
+}
+
+.chord-button:nth-child(3)::before {
+  background-color: rgba(0, 191, 255, 1); /* Deep Sky Blue */
+}
+
+.chord-button:nth-child(4)::before {
+  background-color: rgba(0, 174, 255, 1); /* Bright Blue */
+}
+
+.chord-button:nth-child(5)::before {
+  background-color: rgba(0, 157, 255, 1); /* Electric Blue */
+}
+
+.chord-button:nth-child(6)::before {
+  background-color: rgba(0, 140, 255, 1); /* Azure Blue */
+}
+
+.chord-button:nth-child(7)::before {
+  background-color: rgba(0, 123, 255, 1); /* Medium Blue */
+}
+
+.chord-button:nth-child(8)::before {
+  background-color: rgba(0, 106, 255, 1); /* Ocean Blue */
+}
+
+.chord-button:nth-child(9)::before {
+  background-color: rgba(0, 89, 255, 1); /* Deep Blue */
+}
+
+.chord-button:hover::before {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+@keyframes spin-clockwise {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spin-counter-clockwise {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+.chord-button.spinning {
+  transform: scale(0.5);
+  animation: spin-clockwise 0.1s linear infinite;
+  transform-origin: center;
+}
+
+.chord-button.spinning::before {
+  width: 60%;
+  height: 60%;
+}
+
+.chord-button:active {
+  transform: scale(0.95);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+}
+
+.tone-selector {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.tone-select-button {
+  padding: 8px 16px;
+  font-size: clamp(10px, 3vw, 15px);
+  border: none;
+  border-radius: 5px;
+  background-color: rgba(100, 149, 237, 0.8);
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.tone-select-button:hover {
+  background-color: rgba(100, 149, 237, 1);
+}
+
+.tone-select-button.active {
+  background-color: rgba(65, 105, 225, 1);
+}
+
+.octave-container {
+  position: fixed;
+  bottom: 20px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 20px;
+  z-index: 1;
+}
+
+.octave-button {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: none;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  background-color: #2196f3;
+  color: white;
+}
+
+.octave-button:hover {
+  background-color: #1e88e5;
+}
+
+.octave-button:active {
+  transform: scale(0.95);
+}
+
+@media (max-width: 600px) {
+  .button-container {
+    max-width: 90vw;
+  }
+
+  .chord-button {
+    font-size: 12px;
+  }
+
+  .tone-button {
+    width: 50px;
+    height: 50px;
+    font-size: 14px;
+  }
+
+  .tone-select-button {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 400px) {
+  .button-container {
+    gap: 5px;
+  }
+
+  .chord-button {
+    font-size: 10px;
+  }
+
+  .tone-button {
+    width: 40px;
+    height: 40px;
+    font-size: 12px;
+  }
+
+  .tone-select-button {
+    padding: 4px 8px;
+    font-size: 10px;
+  }
+}
+
+@media (max-height: 600px) {
+  body {
+    justify-content: flex-start;
+  }
+
+  .main-content {
+    padding-top: 20px;
+  }
+}

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>Seven Chords and Tones Experience</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="main-content">
+      <div class="tone-container" id="toneContainer">
+        <!-- Tone buttons will be dynamically added here -->
+      </div>
+      <div class="button-container">
+        <button class="chord-button">Celestial Whisper</button>
+        <button class="chord-button">Ethereal Dream</button>
+        <button class="chord-button">Mystic Voyage</button>
+        <button class="chord-button">Harmonic Cascade</button>
+        <button class="chord-button">Sonic Aurora</button>
+        <button class="chord-button">Quantum Resonance</button>
+        <button class="chord-button">Nebula's Echo</button>
+        <button class="chord-button">Astral Pulse</button>
+        <button class="chord-button">Cosmic Harmony</button>
+      </div>
+      <div class="tone-selector">
+        <button class="tone-select-button" data-tones="3">3 Tones</button>
+        <button class="tone-select-button" data-tones="4">4 Tones</button>
+        <button class="tone-select-button" data-tones="5">5 Tones</button>
+      </div>
+      <div class="octave-container">
+        <button id="decrease-octave" class="octave-button">-</button>
+        <button id="increase-octave" class="octave-button">+</button>
+      </div>
+    </div>
+    <canvas id="starfield"></canvas>
+    <canvas id="aurora-background"></canvas>
+    <script type="module" src="audio.js"></script>
+    <script type="module" src="aurorawaves.js"></script>
+    <script type="module" src="starfield.js"></script>
+    <script type="module" src="ui.js"></script>
+    <script type="module">
+      import { initializeUI } from "./ui.js";
+      initializeUI();
+    </script>
+  </body>
+</html>

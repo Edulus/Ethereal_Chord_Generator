@@ -6,6 +6,14 @@ let time = 0;
 const decelerationRate = 0.99;
 let isSoundPlaying = false;
 let resizeListenerAdded = false;
+// One wave layer per tone in the current chord.
+let colors = [];
+
+function setAuroraFrequencies(frequencies) {
+  colors = frequencies.map(
+    (freq) => `hsla(${frequencyToHue(freq)}, 100%, 50%, 0.3)`
+  );
+}
 
 function startAuroraAnimation(frequencies) {
   const canvas = document.getElementById("aurora-background");
@@ -25,9 +33,7 @@ function startAuroraAnimation(frequencies) {
   resizeCanvas();
   stopAuroraAnimation();
 
-  const colors = frequencies.map(
-    (freq) => `hsla(${frequencyToHue(freq)}, 100%, 50%, 0.3)`
-  );
+  setAuroraFrequencies(frequencies);
 
   function drawAurora() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -76,4 +82,9 @@ function setIsSoundPlaying(isPlaying) {
   isSoundPlaying = isPlaying;
 }
 
-export { startAuroraAnimation, stopAuroraAnimation, setIsSoundPlaying };
+export {
+  startAuroraAnimation,
+  stopAuroraAnimation,
+  setAuroraFrequencies,
+  setIsSoundPlaying,
+};

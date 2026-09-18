@@ -13,7 +13,11 @@ import {
   resumeAudio,
 } from "./audio.js";
 
-import { startAuroraAnimation, setIsSoundPlaying } from "./aurorawaves.js";
+import {
+  startAuroraAnimation,
+  setAuroraFrequencies,
+  setIsSoundPlaying,
+} from "./aurorawaves.js";
 
 import { setStarExcitement } from "./starfield.js";
 
@@ -171,6 +175,7 @@ function initializeUI() {
       const toneCount = parseInt(button.dataset.tones);
       setToneCount(toneCount);
       updateToneButtons(getCurrentFrequencies());
+      setAuroraFrequencies(getCurrentFrequencies());
       retriggerSustained();
 
       document.querySelectorAll(".tone-select-button").forEach((btn) => {

@@ -18,7 +18,6 @@ body {
   flex-direction: column;
   align-items: center;
   max-height: 100vh;
-  overflow-y: auto;
 }
 
 #starfield,
@@ -69,7 +68,6 @@ body {
   max-width: 450px;
   aspect-ratio: 1 / 1;
   margin-bottom: 20px;
-  overflow: hidden;
 }
 
 .chord-button {

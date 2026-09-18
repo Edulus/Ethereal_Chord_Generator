@@ -5,7 +5,6 @@ import {
   stopTone,
   frequencyToNote,
   frequencyToHue,
-  chords,
   currentChord,
   setToneCount,
   currentToneCount,
@@ -14,11 +13,7 @@ import {
   resumeAudio,
 } from "./audio.js";
 
-import {
-  startAuroraAnimation,
-  stopAuroraAnimation,
-  setIsSoundPlaying,
-} from "./aurorawaves.js";
+import { startAuroraAnimation, setIsSoundPlaying } from "./aurorawaves.js";
 
 import { setStarExcitement } from "./starfield.js";
 
@@ -185,7 +180,7 @@ function initializeUI() {
     });
   });
 
-  updateToneButtons(chords[currentToneCount][currentChord]);
+  updateToneButtons(getCurrentFrequencies());
   document
     .querySelector(`.tone-select-button[data-tones="${currentToneCount}"]`)
     .classList.add("active");

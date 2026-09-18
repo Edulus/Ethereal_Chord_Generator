@@ -211,17 +211,6 @@ button {
   background-color: rgba(65, 105, 225, 1);
 }
 
-.octave-container {
-  position: fixed;
-  bottom: 20px;
-  left: 0;
-  right: 0;
-  display: flex;
-  justify-content: space-between;
-  padding: 0 20px;
-  z-index: 1;
-}
-
 .octave-button {
   width: 60px;
   height: 60px;

@@ -6,14 +6,13 @@ let isSoundPlaying = false;
 let soundStartTime = 0;
 let resizeListenerAdded = false;
 
-// Wave speed while sound plays: starts at BASE and keeps rising the longer
-// the sound is held or sustained, up to MAX (pixels per frame).
+// Wave speed while sound plays: starts at BASE (pixels per frame) and grows
+// by WAVE_SPEED_GROWTH times every second with no upper limit, so a long
+// sustain gets faster and faster.
 const BASE_WAVE_SPEED = 2;
-const WAVE_SPEED_PER_SECOND = 1.5;
-const MAX_WAVE_SPEED = 15;
+const WAVE_SPEED_GROWTH = 1.18;
 
-// Each chord has its own palette; the tone count picks how many of its
-// colors (wave layers) are shown. Values are [hue, saturation %, lightness %].
+// Each chord has its own palette. Values are [hue, saturation %, lightness %].
 const palettes = {
   "Celestial Whisper": [
     [200, 80, 70],
@@ -82,10 +81,16 @@ const palettes = {
 
 let colors = [];
 
+// The tone count sets how many wave layers are drawn. Layers are spread
+// evenly across the whole palette (always first to last color), so 3, 4 and
+// 5 tones share the same color scheme.
 function setAuroraChord(chordName, layerCount) {
-  colors = palettes[chordName]
-    .slice(0, layerCount)
-    .map(([h, s, l]) => `hsla(${h}, ${s}%, ${l}%, 0.3)`);
+  const palette = palettes[chordName];
+  colors = Array.from({ length: layerCount }, (_, i) => {
+    const index = Math.round((i * (palette.length - 1)) / (layerCount - 1));
+    const [h, s, l] = palette[index];
+    return `hsla(${h}, ${s}%, ${l}%, 0.3)`;
+  });
 }
 
 function startAuroraAnimation(chordName, layerCount) {
@@ -133,10 +138,8 @@ function startAuroraAnimation(chordName, layerCount) {
 
     if (isSoundPlaying) {
       const secondsPlaying = (performance.now() - soundStartTime) / 1000;
-      const targetSpeed = Math.min(
-        BASE_WAVE_SPEED + WAVE_SPEED_PER_SECOND * secondsPlaying,
-        MAX_WAVE_SPEED
-      );
+      const targetSpeed =
+        BASE_WAVE_SPEED * Math.pow(WAVE_SPEED_GROWTH, secondsPlaying);
       waveSpeed += (targetSpeed - waveSpeed) * 0.1; // Ease toward the target
     } else {
       waveSpeed = Math.max(waveSpeed * decelerationRate, 0); // Decelerate to a stop

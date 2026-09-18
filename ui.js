@@ -22,6 +22,24 @@ import {
 
 import { setStarExcitement } from "./starfield.js";
 
+// A double-click/double-tap on a chord square latches it so it keeps playing
+// after release. Pressing it again, another chord, or a tone ends the latch.
+const DOUBLE_PRESS_MS = 350;
+let sustainedButton = null;
+let lastPress = { button: null, time: 0 };
+
+function releaseSustain() {
+  if (!sustainedButton) return;
+  sustainedButton.classList.remove("spinning");
+  sustainedButton = null;
+}
+
+// Re-pitch a sustained chord after an octave or tone-count change.
+function retriggerSustained() {
+  if (!sustainedButton) return;
+  startAuroraAnimation(playChord(currentChord));
+}
+
 function updateToneButtons(frequencies) {
   const toneContainer = document.getElementById("toneContainer");
   toneContainer.innerHTML = "";
@@ -38,6 +56,7 @@ function updateToneButtons(frequencies) {
 
     function startTone() {
       if (!isPlaying) {
+        releaseSustain();
         playTone(freq);
         setIsSoundPlaying(true);
         setStarExcitement(true);
@@ -81,11 +100,13 @@ function initializeUI() {
   decreaseOctaveButton.addEventListener("click", () => {
     const newFrequencies = shiftOctave(-1);
     updateToneButtons(newFrequencies);
+    retriggerSustained();
   });
 
   increaseOctaveButton.addEventListener("click", () => {
     const newFrequencies = shiftOctave(1);
     updateToneButtons(newFrequencies);
+    retriggerSustained();
   });
 
   document.querySelectorAll(".chord-button").forEach((button) => {
@@ -109,17 +130,44 @@ function initializeUI() {
       button.classList.remove("spinning");
     }
 
-    button.addEventListener("mousedown", playChordHandler);
-    button.addEventListener("mouseup", stopChordHandler);
-    button.addEventListener("mouseleave", stopChordHandler);
+    function pressStart() {
+      const now = performance.now();
+      const isDouble =
+        lastPress.button === button && now - lastPress.time < DOUBLE_PRESS_MS;
+      lastPress = { button, time: now };
+
+      if (sustainedButton === button) {
+        releaseSustain();
+        stopChordHandler();
+        lastPress = { button: null, time: 0 };
+        return;
+      }
+
+      releaseSustain();
+      playChordHandler();
+      if (isDouble) sustainedButton = button;
+    }
+
+    function pressEnd() {
+      if (sustainedButton === button) return;
+      stopChordHandler();
+    }
+
+    button.addEventListener("mousedown", pressStart);
+    button.addEventListener("mouseup", pressEnd);
+    button.addEventListener("mouseleave", pressEnd);
 
     button.addEventListener("touchstart", (e) => {
       e.preventDefault();
-      playChordHandler();
+      pressStart();
     });
     button.addEventListener("touchend", (e) => {
       e.preventDefault();
-      stopChordHandler();
+      pressEnd();
+    });
+    button.addEventListener("touchcancel", (e) => {
+      e.preventDefault();
+      pressEnd();
     });
   });
 
@@ -128,6 +176,7 @@ function initializeUI() {
       const toneCount = parseInt(button.dataset.tones);
       setToneCount(toneCount);
       updateToneButtons(getCurrentFrequencies());
+      retriggerSustained();
 
       document.querySelectorAll(".tone-select-button").forEach((btn) => {
         btn.classList.remove("active");

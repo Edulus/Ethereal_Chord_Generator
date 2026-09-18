@@ -20,6 +20,11 @@ body {
   max-height: 100vh;
 }
 
+/* Allow pinch-zoom but not double-tap zoom, which would fight double-tap sustain. */
+button {
+  touch-action: manipulation;
+}
+
 #starfield,
 #aurora-background {
   position: fixed;

@@ -208,15 +208,24 @@ body {
   background-color: rgba(65, 105, 225, 1);
 }
 
+.octave-container {
+  position: fixed;
+  bottom: 20px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 20px;
+  z-index: 1;
+}
+
 .octave-button {
-  flex-shrink: 0;
-  width: 40px;
-  height: 40px;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
   border: none;
-  font-size: 20px;
+  font-size: 24px;
   font-weight: bold;
-  line-height: 1;
   cursor: pointer;
   background-color: #2196f3;
   color: white;
@@ -269,16 +278,6 @@ body {
   .tone-select-button {
     padding: 4px 8px;
     font-size: 10px;
-  }
-
-  .tone-selector {
-    gap: 6px;
-  }
-
-  .octave-button {
-    width: 32px;
-    height: 32px;
-    font-size: 16px;
   }
 }
 

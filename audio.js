@@ -71,6 +71,20 @@ function createTone(frequency) {
   return { oscillator, gainNode };
 }
 
+// Fade from the current level (not from when the note started) to avoid a
+// click on release, then stop and disconnect once silent.
+function fadeOutAndStop({ oscillator, gainNode }) {
+  const now = audioContext.currentTime;
+  gainNode.gain.cancelScheduledValues(now);
+  gainNode.gain.setValueAtTime(gainNode.gain.value, now);
+  gainNode.gain.exponentialRampToValueAtTime(0.00001, now + 0.1);
+  oscillator.stop(now + 0.1);
+  oscillator.onended = () => {
+    oscillator.disconnect();
+    gainNode.disconnect();
+  };
+}
+
 // Browsers start the context suspended until a user gesture.
 function resumeAudio() {
   if (audioContext.state === "suspended") {
@@ -100,17 +114,7 @@ function playChord(chordName) {
 function stopChord(chordName) {
   if (!activeOscillators[chordName]) return;
 
-  activeOscillators[chordName].forEach(({ oscillator, gainNode }) => {
-    gainNode.gain.exponentialRampToValueAtTime(
-      0.00001,
-      audioContext.currentTime + 0.1
-    );
-    setTimeout(() => {
-      oscillator.stop();
-      oscillator.disconnect();
-      gainNode.disconnect();
-    }, 100);
-  });
+  activeOscillators[chordName].forEach(fadeOutAndStop);
 
   delete activeOscillators[chordName];
 }
@@ -130,17 +134,7 @@ function stopTone() {
 
 function stopAllSounds() {
   Object.keys(activeOscillators).forEach((key) => {
-    activeOscillators[key].forEach(({ oscillator, gainNode }) => {
-      gainNode.gain.exponentialRampToValueAtTime(
-        0.00001,
-        audioContext.currentTime + 0.1
-      );
-      setTimeout(() => {
-        oscillator.stop();
-        oscillator.disconnect();
-        gainNode.disconnect();
-      }, 100);
-    });
+    activeOscillators[key].forEach(fadeOutAndStop);
     delete activeOscillators[key];
   });
 }

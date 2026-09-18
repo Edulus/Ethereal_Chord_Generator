@@ -183,6 +183,7 @@ body {
 .tone-selector {
   display: flex;
   justify-content: center;
+  align-items: center;
   gap: 10px;
   width: 100%;
   margin-bottom: 20px;
@@ -207,24 +208,15 @@ body {
   background-color: rgba(65, 105, 225, 1);
 }
 
-.octave-container {
-  position: fixed;
-  bottom: 20px;
-  left: 0;
-  right: 0;
-  display: flex;
-  justify-content: space-between;
-  padding: 0 20px;
-  z-index: 1;
-}
-
 .octave-button {
-  width: 60px;
-  height: 60px;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   border: none;
-  font-size: 24px;
+  font-size: 20px;
   font-weight: bold;
+  line-height: 1;
   cursor: pointer;
   background-color: #2196f3;
   color: white;
@@ -277,6 +269,16 @@ body {
   .tone-select-button {
     padding: 4px 8px;
     font-size: 10px;
+  }
+
+  .tone-selector {
+    gap: 6px;
+  }
+
+  .octave-button {
+    width: 32px;
+    height: 32px;
+    font-size: 16px;
   }
 }
 

@@ -49,7 +49,7 @@ To modify or extend this project:
 Contributions to the Multi-Tonal Chord Generator are welcome. Please fork the repository and submit a pull request with your proposed changes.
 
 ## License
-[Insert appropriate license information here]
+[MIT](LICENSE)
 
 ## Acknowledgments
 This project is a fork of the original Seven Chords and Tones Experience. We appreciate the foundation provided by the original creators.

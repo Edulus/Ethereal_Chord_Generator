@@ -55,6 +55,8 @@ const activeOscillators = {};
 let currentChord = "Celestial Whisper";
 let currentToneCount = 5;
 let octaveShift = 0;
+// Keeps every chord between ~33 Hz and ~10.5 kHz.
+const MAX_OCTAVE_SHIFT = 3;
 
 function createTone(frequency) {
   const oscillator = audioContext.createOscillator();
@@ -155,7 +157,10 @@ function setToneCount(count) {
 }
 
 function shiftOctave(direction) {
-  octaveShift += direction;
+  octaveShift = Math.max(
+    -MAX_OCTAVE_SHIFT,
+    Math.min(MAX_OCTAVE_SHIFT, octaveShift + direction)
+  );
   return getCurrentFrequencies();
 }
 

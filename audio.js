@@ -71,13 +71,16 @@ function createTone(frequency) {
   return { oscillator, gainNode };
 }
 
+function getCurrentFrequencies() {
+  return chords[currentToneCount][currentChord].map(
+    (freq) => freq * Math.pow(2, octaveShift)
+  );
+}
+
 function playChord(chordName) {
   stopAllSounds();
   currentChord = chordName;
-  const baseFrequencies = chords[currentToneCount][chordName];
-  const shiftedFrequencies = baseFrequencies.map(
-    (freq) => freq * Math.pow(2, octaveShift)
-  );
+  const shiftedFrequencies = getCurrentFrequencies();
   activeOscillators[chordName] = shiftedFrequencies.map((freq) => {
     const { oscillator, gainNode } = createTone(freq);
     oscillator.start();
@@ -104,10 +107,10 @@ function stopChord(chordName) {
   delete activeOscillators[chordName];
 }
 
+// Tone buttons already hold octave-shifted frequencies, so play them as-is.
 function playTone(frequency) {
   stopAllSounds();
-  const shiftedFrequency = frequency * Math.pow(2, octaveShift);
-  const { oscillator, gainNode } = createTone(shiftedFrequency);
+  const { oscillator, gainNode } = createTone(frequency);
   oscillator.start();
   activeOscillators["tone"] = [{ oscillator, gainNode }];
 }
@@ -150,9 +153,7 @@ function setToneCount(count) {
 
 function shiftOctave(direction) {
   octaveShift += direction;
-  return chords[currentToneCount][currentChord].map(
-    (freq) => freq * Math.pow(2, octaveShift)
-  );
+  return getCurrentFrequencies();
 }
 
 export {
@@ -167,5 +168,6 @@ export {
   currentChord,
   setToneCount,
   currentToneCount,
+  getCurrentFrequencies,
   shiftOctave,
 };

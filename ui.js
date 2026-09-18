@@ -10,6 +10,7 @@ import {
   setToneCount,
   currentToneCount,
   shiftOctave,
+  getCurrentFrequencies,
 } from "./audio.js";
 
 import {
@@ -125,7 +126,7 @@ function initializeUI() {
     button.addEventListener("click", () => {
       const toneCount = parseInt(button.dataset.tones);
       setToneCount(toneCount);
-      updateToneButtons(chords[toneCount][currentChord]);
+      updateToneButtons(getCurrentFrequencies());
 
       document.querySelectorAll(".tone-select-button").forEach((btn) => {
         btn.classList.remove("active");

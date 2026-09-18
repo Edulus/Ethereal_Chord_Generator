@@ -11,6 +11,7 @@ import {
   currentToneCount,
   shiftOctave,
   getCurrentFrequencies,
+  resumeAudio,
 } from "./audio.js";
 
 import {
@@ -140,11 +141,7 @@ function initializeUI() {
     .querySelector(`.tone-select-button[data-tones="${currentToneCount}"]`)
     .classList.add("active");
 
-  document.body.addEventListener("click", function () {
-    if (audioContext.state === "suspended") {
-      audioContext.resume();
-    }
-  });
+  document.body.addEventListener("click", resumeAudio);
 }
 
 export { initializeUI };

@@ -71,6 +71,13 @@ function createTone(frequency) {
   return { oscillator, gainNode };
 }
 
+// Browsers start the context suspended until a user gesture.
+function resumeAudio() {
+  if (audioContext.state === "suspended") {
+    audioContext.resume();
+  }
+}
+
 function getCurrentFrequencies() {
   return chords[currentToneCount][currentChord].map(
     (freq) => freq * Math.pow(2, octaveShift)
@@ -78,6 +85,7 @@ function getCurrentFrequencies() {
 }
 
 function playChord(chordName) {
+  resumeAudio();
   stopAllSounds();
   currentChord = chordName;
   const shiftedFrequencies = getCurrentFrequencies();
@@ -109,6 +117,7 @@ function stopChord(chordName) {
 
 // Tone buttons already hold octave-shifted frequencies, so play them as-is.
 function playTone(frequency) {
+  resumeAudio();
   stopAllSounds();
   const { oscillator, gainNode } = createTone(frequency);
   oscillator.start();
@@ -169,5 +178,6 @@ export {
   setToneCount,
   currentToneCount,
   getCurrentFrequencies,
+  resumeAudio,
   shiftOctave,
 };

@@ -5,6 +5,7 @@ let waveSpeed = 0;
 let time = 0;
 const decelerationRate = 0.99;
 let isSoundPlaying = false;
+let resizeListenerAdded = false;
 
 function startAuroraAnimation(frequencies) {
   const canvas = document.getElementById("aurora-background");
@@ -15,8 +16,14 @@ function startAuroraAnimation(frequencies) {
     canvas.height = window.innerHeight;
   }
 
-  window.addEventListener("resize", resizeCanvas);
+  // Called on every chord press: register the listener once and cancel any
+  // previous loop so only one animation loop ever runs.
+  if (!resizeListenerAdded) {
+    window.addEventListener("resize", resizeCanvas);
+    resizeListenerAdded = true;
+  }
   resizeCanvas();
+  stopAuroraAnimation();
 
   const colors = frequencies.map(
     (freq) => `hsla(${frequencyToHue(freq)}, 100%, 50%, 0.3)`

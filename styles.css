@@ -229,6 +229,14 @@ body {
   color: white;
 }
 
+#decrease-octave {
+  margin-right: 12px;
+}
+
+#increase-octave {
+  margin-left: 12px;
+}
+
 .octave-button:hover {
   background-color: #1e88e5;
 }

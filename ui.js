@@ -15,7 +15,7 @@ import {
 
 import {
   startAuroraAnimation,
-  setAuroraFrequencies,
+  setAuroraChord,
   setIsSoundPlaying,
 } from "./aurorawaves.js";
 
@@ -36,7 +36,8 @@ function releaseSustain() {
 // Re-pitch a sustained chord after an octave or tone-count change.
 function retriggerSustained() {
   if (!sustainedButton) return;
-  startAuroraAnimation(playChord(currentChord));
+  const frequencies = playChord(currentChord);
+  startAuroraAnimation(currentChord, frequencies.length);
 }
 
 function updateToneButtons(frequencies) {
@@ -116,7 +117,7 @@ function initializeUI() {
     function playChordHandler() {
       const frequencies = playChord(chordName);
       updateToneButtons(frequencies);
-      startAuroraAnimation(frequencies);
+      startAuroraAnimation(chordName, frequencies.length);
       setIsSoundPlaying(true);
       setStarExcitement(true);
       button.classList.add("spinning");
@@ -175,7 +176,7 @@ function initializeUI() {
       const toneCount = parseInt(button.dataset.tones);
       setToneCount(toneCount);
       updateToneButtons(getCurrentFrequencies());
-      setAuroraFrequencies(getCurrentFrequencies());
+      setAuroraChord(currentChord, toneCount);
       retriggerSustained();
 
       document.querySelectorAll(".tone-select-button").forEach((btn) => {
